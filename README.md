@@ -50,7 +50,7 @@ FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱�
 >     pip install -r requirements.txt
 >     ```
 > 
-> 3.  **Redis 서버 실행**   
+> 3.  **Redis 서버 실행 (docker)**   
 >     ```bash
 >     docker run --name redis -p 6379:6379 -d redis
 >     ```
