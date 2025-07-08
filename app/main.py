@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.router import redis as redis_router
+from app.routers import rss_cache_router as redis_router
 
 app = FastAPI()
 

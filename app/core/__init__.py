@@ -1,4 +1,4 @@
-from .redis_client import (
+from .redis import (
     delete_all_cache,
     delete_cache_by_query,
     get_all_keys,
