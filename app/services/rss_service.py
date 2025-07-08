@@ -1,10 +1,5 @@
 import feedparser
-
-RSS_FEEDS = [
-    "https://news.google.com/rss/search?q={query}",
-    "https://www.bing.com/news/search?q={query}&format=rss",
-    "https://news.yahoo.com/rss?p={query}",
-]
+from app.config import RSS_FEEDS
 
 def fetch_rss(query: str):
     result = []
