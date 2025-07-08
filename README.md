@@ -81,3 +81,8 @@ python performance_test.py [keyword]
 2.  RSS 피드를 직접 fetch하여 경과 시간을 측정합니다.
 3.  가져온 데이터를 Redis에 저장합니다.
 4.  Redis에서 캐시된 데이터를 조회하여 경과 시간을 측정하고 성능 향상률을 출력합니다.
+
+## 7. 차후 계획
+- Redis 내부 구조에 대한 이해 및 C++로 mini-redis 직접 구현
+- 현재 프로젝트에서 사용 중인 Redis를 mini-redis로 교체하여 실제 성능 비교 및 검증 진행
+
