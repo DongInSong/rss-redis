@@ -17,6 +17,18 @@ def search_news(q: str = Query(..., min_length=1)):
     set_cached_news(q, news)
     return {"source": "rss", "data": news}
 
+@app.get("/metrics")
+def metrics():
+    return get_stats()
+
+@app.get("/keys")
+def get_keys():
+    return get_all_keys()
+
+@app.get("/cache")
+def get_cache():
+    return get_all_cached()
+
 @app.delete("/cache/{query}")
 def delete_cache(query: str):  
     code = delete_cache_by_query(query)
@@ -30,15 +42,3 @@ def delete_all():
     if count == 0:
         raise HTTPException(status_code=404, detail="No cache found to delete")
     return {"message": f"All caches deleted successfully. {count} items removed."}  
-
-@app.get("/metrics")
-def metrics():
-    return get_stats()
-
-@app.get("/keys")
-def get_keys():
-    return get_all_keys()
-
-@app.get("/cache")
-def get_cache():
-    return get_all_cached()
