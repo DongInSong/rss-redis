@@ -2,7 +2,7 @@
 
 ## 1. 개요
 
-본 프로젝트는 FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 검색하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스입니다. 사용자는 API 엔드포인트를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.
+FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스 기반 테스트 프로젝트입니다. API를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.
 
 ## 2. 주요 기능
 
@@ -36,9 +36,7 @@
     pip install -r requirements.txt
     ```
 
-3.  **Redis 서버 실행**
-    로컬 또는 원격 환경에서 Redis 서버가 실행 중이어야 합니다. 기본 설정은 `localhost:6379` (`app/config.py` 파일에서 변경)
-    
+3.  **Redis 서버 실행**   
     ```bash
     docker run --name redis -p 6379:6379 -d redis
     ```
@@ -48,11 +46,11 @@
     uvicorn app.main:app --reload
     ```
 
-5. **테스트 예시**
+5. **CLI 테스트 예시**
     ```bash
-        curl "http://127.0.0.1:8000/search?q=ai"
-        curl "http://127.0.0.1:8000/keys"
-        curl -X DELETE "http://127.0.0.1:8000/cache"
+    curl "http://127.0.0.1:8000/search?q=ai"
+    curl "http://127.0.0.1:8000/keys"
+    curl -X DELETE "http://127.0.0.1:8000/cache"
     ```
 
 ## 5. API 엔드포인트
@@ -66,7 +64,9 @@
 
 ## 6. 성능 테스트 방법
 
-`performance_test.py` 스크립트는 RSS 피드를 직접 가져오는 것과 Redis 캐시를 사용하는 것 사이의 성능 차이를 측정합니다.
+`performance_test.py` 는 RSS 피드를 직접 가져오는 것과 Redis 캐시를 사용하는 것 사이의 성능 차이를 측정합니다.
+
+![image](https://github.com/user-attachments/assets/76d19e46-092f-428e-9b49-fa710c2fb86c)
 
 **실행 명령어:**
 
@@ -81,3 +81,8 @@ python performance_test.py [keyword]
 2.  RSS 피드를 직접 fetch하여 경과 시간을 측정합니다.
 3.  가져온 데이터를 Redis에 저장합니다.
 4.  Redis에서 캐시된 데이터를 조회하여 경과 시간을 측정하고 성능 향상률을 출력합니다.
+
+## 7. 차후 계획
+- Redis 내부 구조에 대한 이해 및 C++로 mini-redis 직접 구현
+- 현재 프로젝트에서 사용 중인 Redis를 mini-redis로 교체하여 실제 성능 비교 및 검증 진행
+
