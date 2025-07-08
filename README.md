@@ -19,45 +19,46 @@ FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱�
 ## 4. 설치 및 실행 방법
 
 ### Docker Compose를 사용한 실행 (권장)
+>
+> 프로젝트 루트 디렉토리에서 다음 명령어를 실행하면 FastAPI 애플리케이션과 Redis 데이터베이스를 한 번에 실행할 수 있습니다.
+> 
+> ```bash
+> docker compose up --build
+> ```
+> 
+> - 애플리케이션은 `http://localhost:8000`에서 실행됩니다.
+> 
+> **참고: Docker 실행 오류 시**
+> 
+> - **인증 오류 (`docker-credential-desktop.exe` or similar):** `docker logout` 실행 후 다시 시도
+> - **`buildx` 플러그인 오류:** `DOCKER_BUILDKIT=0 docker compose up --build` 명령어로 실행하여 BuildKit을 비활성화
 
-프로젝트 루트 디렉토리에서 다음 명령어를 실행하면 FastAPI 애플리케이션과 Redis 데이터베이스를 한 번에 실행할 수 있습니다.
 
-```bash
-docker compose up --build
-```
-
-- 애플리케이션은 `http://localhost:8000`에서 실행됩니다.
-
-**참고: Docker 실행 오류 시**
-
-- **인증 오류 (`docker-credential-desktop.exe` or similar):** `docker logout` 실행 후 다시 시도
-- **`buildx` 플러그인 오류:** `DOCKER_BUILDKIT=0 docker compose up --build` 명령어로 실행하여 BuildKit을 비활성화
-
-### 직접적으로 실행
-
-- Python 3.8 이상
-- Redis 서버
-
-1.  **프로젝트 클론**
-    ```bash
-    git clone https://github.com/DongInSong/rss-redis.git
-    cd rss-redis
-    ```
-
-2.  **의존성 설치**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3.  **Redis 서버 실행**   
-    ```bash
-    docker run --name redis -p 6379:6379 -d redis
-    ```
-
-4.  **서버 실행**
-    ```bash
-    uvicorn app.main:app --reload
-    ```
+### 직접 실행
+> 
+> - Python 3.8 이상
+> - Redis 서버
+> 
+> 1.  **프로젝트 클론**
+>     ```bash
+>     git clone https://github.com/DongInSong/rss-redis.git
+>     cd rss-redis
+>     ```
+> 
+> 2.  **의존성 설치**
+>     ```bash
+>     pip install -r requirements.txt
+>     ```
+> 
+> 3.  **Redis 서버 실행**   
+>     ```bash
+>     docker run --name redis -p 6379:6379 -d redis
+>     ```
+> 
+> 4.  **서버 실행**
+>     ```bash
+>     uvicorn app.main:app --reload
+>     ```
 
 ### CLI 테스트 예시
     ```bash
