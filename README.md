@@ -69,7 +69,7 @@ FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱�
 **실행 명령어:**
 
 ```bash
-python performance_test.py [keyword]
+python -m tests.performance_test [keyword]
 ```
 
 - `[keyword]`: 테스트할 검색어입니다. 이 인수를 생략하면 기본값인 "fastapi"로 테스트가 진행됩니다.
