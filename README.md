@@ -1,1 +1,83 @@
-RSS and Redis
+# Redis를 사용한 RSS 뉴스 피드 캐싱
+
+## 1. 개요
+
+본 프로젝트는 FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 검색하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스입니다. 사용자는 API 엔드포인트를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.
+
+## 2. 주요 기능
+
+- **키워드 기반 뉴스 검색**: 사용자가 원하는 키워드로 RSS 피드 검색
+- **Redis 캐싱**: 한 번 검색된 결과는 Redis에 지정된 시간(TTL) 동안 캐시되어, 동일한 요청에 대해 더 빠른 응답 제공 'config,py'
+- **캐시 통계**: 캐시 히트(hit) 및 미스(miss) 횟수 집계
+- **데이터 조회**: Redis에 저장된 캐시 키 또는 전체 캐시 데이터 조회
+- **성능 테스트**: 캐시 사용 유무에 따른 성능 차이를 비교하는 테스트 스크립트
+
+## 3. 기술 스택
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)  ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)  ![Uvicorn](https://img.shields.io/badge/Uvicorn-4E87A2?style=for-the-badge&logo=uvicorn&logoColor=white)
+
+## 4. 설치 및 실행 방법
+
+### 사전 요구사항
+
+- Python 3.8 이상
+- Redis 서버
+
+### 설치 절차
+
+1.  **프로젝트 클론**
+    ```bash
+    git clone https://github.com/DongInSong/rss-redis.git
+    cd rss-redis
+    ```
+
+2.  **의존성 설치**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Redis 서버 실행**
+    로컬 또는 원격 환경에서 Redis 서버가 실행 중이어야 합니다. 기본 설정은 `localhost:6379` (`app/config.py` 파일에서 변경)
+    
+    ```bash
+    docker run --name redis -p 6379:6379 -d redis
+    ```
+
+4.  **서버 실행**
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+
+5. **테스트 예시**
+    ```bash
+        curl "http://127.0.0.1:8000/search?q=ai"
+        curl "http://127.0.0.1:8000/keys"
+        curl -X DELETE "http://127.0.0.1:8000/cache"
+    ```
+
+## 5. API 엔드포인트
+
+- `GET /search?q={keyword}`: 특정 키워드로 뉴스를 검색합니다. 캐시가 있으면 캐시된 데이터를, 없으면 RSS 피드를 직접 가져옵니다.
+- `GET /metrics`: 캐시 히트/미스 횟수를 조회합니다.
+- `GET /keys`: Redis에 저장된 모든 `rss:*` 키 목록을 반환합니다.
+- `GET /cache`: Redis에 저장된 모든 `rss:*` 키와 해당 데이터를 반환합니다.
+- `DELETE /cache`: Redis에 저장된 모든 `cache`를 제거합니다.
+- `DELETE /cache/{keyword}`: Redis에 저장된 keyword(value)에 해당되는 `cache`를 제거합니다.
+
+## 6. 성능 테스트 방법
+
+`performance_test.py` 스크립트는 RSS 피드를 직접 가져오는 것과 Redis 캐시를 사용하는 것 사이의 성능 차이를 측정합니다.
+
+**실행 명령어:**
+
+```bash
+python performance_test.py [keyword]
+```
+
+- `[keyword]`: 테스트할 검색어입니다. 이 인수를 생략하면 기본값인 "fastapi"로 테스트가 진행됩니다.
+
+**테스트 순서:**
+1.  기존의 모든 캐시 데이터를 삭제합니다.
+2.  RSS 피드를 직접 fetch하여 경과 시간을 측정합니다.
+3.  가져온 데이터를 Redis에 저장합니다.
+4.  Redis에서 캐시된 데이터를 조회하여 경과 시간을 측정하고 성능 향상률을 출력합니다.

@@ -9,6 +9,16 @@ def get_cached_news(query: str):
 
 def set_cached_news(query: str, data):
     r.setex(f"rss:{query}", CACHE_TTL, json.dumps(data))
+    
+def delete_cache_by_query(query: str) -> bool:
+    return r.delete(f"rss:{query}") > 0
+
+def delete_all_cache()  -> int:
+    keys = r.keys("rss:*")
+    if keys:
+        r.delete(*keys)
+        return len(keys)
+    return False
 
 def incr_hit():
     r.incr("stats:hit")
@@ -21,3 +31,16 @@ def get_stats():
         "hit": int(r.get("stats:hit") or 0),
         "miss": int(r.get("stats:miss") or 0)
     }
+
+def get_all_keys():
+    return r.keys("rss:*")
+
+def get_all_cached():
+    cached_data = {}
+    for key in sorted(r.keys("rss:*")):
+        val = r.get(key)
+        try:
+            cached_data[key] = json.loads(val)
+        except (json.JSONDecodeError, TypeError):
+            cached_data[key] = f"Error decoding JSON for key: {key}"
+    return cached_data
