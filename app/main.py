@@ -3,7 +3,7 @@ from app.routers import rss_cache_router as redis_router
 
 app = FastAPI()
 
-app.include_router(redis_router.router)
+app.include_router(redis_router)
 
 @app.get("/")
 def root():

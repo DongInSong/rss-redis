@@ -14,16 +14,29 @@ FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱�
 
 ## 3. 기술 스택
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)  ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)  ![Uvicorn](https://img.shields.io/badge/Uvicorn-4E87A2?style=for-the-badge&logo=uvicorn&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)  ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)  ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)  
 
 ## 4. 설치 및 실행 방법
 
-### 사전 요구사항
+### Docker Compose를 사용한 실행 (권장)
+
+프로젝트 루트 디렉토리에서 다음 명령어를 실행하면 FastAPI 애플리케이션과 Redis 데이터베이스를 한 번에 실행할 수 있습니다.
+
+```bash
+docker compose up --build
+```
+
+- 애플리케이션은 `http://localhost:8000`에서 실행됩니다.
+
+**참고: Docker 실행 오류 시**
+
+- **인증 오류 (`docker-credential-desktop.exe` or similar):** `docker logout` 실행 후 다시 시도
+- **`buildx` 플러그인 오류:** `DOCKER_BUILDKIT=0 docker compose up --build` 명령어로 실행하여 BuildKit을 비활성화
+
+### 직접적으로 실행
 
 - Python 3.8 이상
 - Redis 서버
-
-### 설치 절차
 
 1.  **프로젝트 클론**
     ```bash
@@ -46,21 +59,21 @@ FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱�
     uvicorn app.main:app --reload
     ```
 
-5. **CLI 테스트 예시**
+### CLI 테스트 예시
     ```bash
-    curl "http://127.0.0.1:8000/search?q=ai"
-    curl "http://127.0.0.1:8000/keys"
-    curl -X DELETE "http://127.0.0.1:8000/cache"
+    curl "http://127.0.0.1:8000/rss/search?q=ai"
+    curl "http://127.0.0.1:8000/rss/keys"
+    curl -X DELETE "http://127.0.0.1:8000/rss/cache"
     ```
 
 ## 5. API 엔드포인트
 
-- `GET /search?q={keyword}`: 특정 키워드로 뉴스를 검색합니다. 캐시가 있으면 캐시된 데이터를, 없으면 RSS 피드를 직접 가져옵니다.
-- `GET /metrics`: 캐시 히트/미스 횟수를 조회합니다.
-- `GET /keys`: Redis에 저장된 모든 `rss:*` 키 목록을 반환합니다.
-- `GET /cache`: Redis에 저장된 모든 `rss:*` 키와 해당 데이터를 반환합니다.
-- `DELETE /cache`: Redis에 저장된 모든 `cache`를 제거합니다.
-- `DELETE /cache/{keyword}`: Redis에 저장된 keyword(value)에 해당되는 `cache`를 제거합니다.
+- `GET /rss/search?q={keyword}`: 특정 키워드로 뉴스를 검색합니다. 캐시가 있으면 캐시된 데이터를, 없으면 RSS 피드를 직접 가져옵니다.
+- `GET /rss/metrics`: 캐시 히트/미스 횟수를 조회합니다.
+- `GET /rss/keys`: Redis에 저장된 모든 `rss:*` 키 목록을 반환합니다.
+- `GET /rss/cache`: Redis에 저장된 모든 `rss:*` 키와 해당 데이터를 반환합니다.
+- `DELETE /rss/cache`: Redis에 저장된 모든 `cache`를 제거합니다.
+- `DELETE /rss/cache/{keyword}`: Redis에 저장된 keyword(value)에 해당되는 `cache`를 제거합니다.
 
 ## 6. 성능 테스트 방법
 
@@ -83,4 +96,3 @@ python -m tests.performance_test [keyword]
 ## 7. 차후 계획
 - Redis 내부 구조에 대한 이해 및 C++로 mini-redis 직접 구현
 - 현재 프로젝트에서 사용 중인 Redis를 mini-redis로 교체하여 실제 성능 비교 및 검증 진행
-
