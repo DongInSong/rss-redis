@@ -1,5 +1,6 @@
 # RSS News Feed Caching with Redis
-
+![License](https://img.shields.io/github/license/senli1073/senli1073.github.io)
+![Last Commit](https://img.shields.io/github/last-commit/DongInSong/rss-redis)
 ## 1. Overview
 FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스 기반 테스트 프로젝트입니다. API를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.   
 This is a test project for a web service that parses RSS news feeds based on specific keywords using FastAPI and caches the search results with Redis to improve response speed. Users can fetch real-time news or quickly access previously cached data through API endpoints.
