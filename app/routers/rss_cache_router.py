@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from app.services import fetch_rss
-from app.core import *
+from app.core.redis import *
 import json
 
 router = APIRouter(
@@ -10,11 +10,10 @@ router = APIRouter(
 )
 
 @router.get("/ping")
-def ping():
-    if get_ping():
-        return {"message": "Pong!"}
-    else:
-        raise HTTPException(status_code=500, detail="Redis server is not reachable")
+def ping(m: str = Query(None, description="Optional message to echo back")):
+    if m:
+        return {m} 
+    return {"PONG!"}
 
 @router.get("/search")
 def search_news(q: str = Query(..., min_length=1)):

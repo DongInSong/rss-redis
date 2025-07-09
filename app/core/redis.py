@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import redis
 import json
 from app.config import REDIS_HOST, REDIS_PORT, CACHE_TTL
@@ -9,9 +10,9 @@ def incr_hit():
 
 def incr_miss():
     r.incr("stats:miss")
-    
-def get_ping():
-    return r.ping()
+
+def get_ping(message: str = None):
+    return r.ping(message)
 
 def set_cached_news(query: str, data):
     r.setex(f"rss:{query}", CACHE_TTL, json.dumps(data))
