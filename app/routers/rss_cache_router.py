@@ -9,6 +9,13 @@ router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
+@router.get("/ping")
+def ping():
+    if get_ping():
+        return {"message": "Pong!"}
+    else:
+        raise HTTPException(status_code=500, detail="Redis server is not reachable")
+
 @router.get("/search")
 def search_news(q: str = Query(..., min_length=1)):
     cached = get_cached_news(q)

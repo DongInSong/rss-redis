@@ -7,7 +7,8 @@ from .redis import (
     incr_hit,
     incr_miss,
     get_stats,
-    get_all_cached
+    get_all_cached,
+    get_ping
 )
 
 __all__ = [
@@ -19,5 +20,6 @@ __all__ = [
     "incr_hit",
     "incr_miss",
     "get_stats",
-    "get_all_cached"
+    "get_all_cached",
+    "get_ping"
 ]
