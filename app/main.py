@@ -1,12 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from app.routers import rss_cache_router as redis_router
 from app.core.exception_handler import *
 import redis.exceptions
 
 app = FastAPI()
 
-app.add_exception_handler(redis.exceptions.ConnectionError, redis_connection_error_handler)
-app.add_exception_handler(redis.exceptions.ResponseError, redis_response_error_handler)
+register_exception_handlers(app)
 
 app.include_router(redis_router)
 
