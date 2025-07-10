@@ -1,51 +1,53 @@
-from http.client import HTTPException
-import redis
+import redis.asyncio as redis
 import json
 from app.config import REDIS_HOST, REDIS_PORT, CACHE_TTL
 
 r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
-def incr_hit():
-    r.incr("stats:hit")
+async def incr_hit():
+    await r.incr("stats:hit")
 
-def incr_miss():
-    r.incr("stats:miss")
+async def incr_miss():
+    await r.incr("stats:miss")
 
-def get_ping(message: str = None):
-    return r.ping(message)
+async def get_ping():
+    return await r.ping()
 
-def set_cached_news(query: str, data):
-    r.setex(f"rss:{query}", CACHE_TTL, json.dumps(data))
+async def set_cached_news(query: str, data):
+    await r.setex(f"rss:{query}", CACHE_TTL, json.dumps(data))
     
-def get_cached_news(query: str):
-    return r.get(f"rss:{query}")
+async def get_cached_news(query: str):
+    return await r.get(f"rss:{query}")
 
-def get_stats():
+async def get_stats():
+    hit = await r.get("stats:hit")
+    miss = await r.get("stats:miss")
     return {
-        "hit": int(r.get("stats:hit") or 0),
-        "miss": int(r.get("stats:miss") or 0)
+        "hit": int(hit or 0),
+        "miss": int(miss or 0)
     }
 
-def get_all_keys():
-    return r.keys("rss:*")
+async def get_all_keys():
+    return await r.keys("rss:*")
 
-def get_all_cached():
+async def get_all_cached():
     cached_data = {}
-    for key in sorted(r.keys("rss:*")):
-        val = r.get(key)
+    keys = await r.keys("rss:*")
+    for key in sorted(keys):
+        val = await r.get(key)
         try:
             cached_data[key] = json.loads(val)
         except (json.JSONDecodeError, TypeError):
             cached_data[key] = f"Error decoding JSON for key: {key}"
     return cached_data
 
-def delete_cache_by_query(query: str) -> bool:
-    return r.delete(f"rss:{query}") > 0
+async def delete_cache_by_query(query: str) -> bool:
+    deleted_count = await r.delete(f"rss:{query}")
+    return deleted_count > 0
 
-def delete_all_cache()  -> int:
-    keys = r.keys("rss:*")
+async def delete_all_cache() -> int:
+    keys = await r.keys("rss:*")
     if keys:
-        r.delete(*keys)
-        return len(keys)
-    return False
-
+        deleted_count = await r.delete(*keys)
+        return deleted_count
+    return 0
