@@ -89,6 +89,8 @@ The application will be available at `http://localhost:8000`.
 
 ## 7. API Endpoints
 
+Detailed API specifications and an interactive interface are available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) after running the server.
+
 - `GET /rss/search?q={keyword}`: Searches for news by keyword. Returns cached data if available; otherwise, fetches new data from RSS feeds, caches it, and then returns it.
 - `GET /rss/metrics`: Returns the number of cache hits and misses.
 - `GET /rss/keys`: Returns a list of all `rss:*` keys stored in Redis.
