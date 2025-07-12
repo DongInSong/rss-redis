@@ -4,3 +4,4 @@ redis
 feedparser
 python-dotenv
 httpx
+pydantic-settings

@@ -1,10 +1,19 @@
-from fastapi import FastAPI, HTTPException
-from app.routers import rss_cache_router as redis_router
-from app.core.exception_handler import *
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from app.routers import rss_cache_router
+from app.core.exception_handler import register_exception_handlers
+from app.core.redis import redis_pool
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    yield
+    # Shutdown
+    await redis_pool.disconnect()
 
-app.include_router(redis_router)
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(rss_cache_router)
 
 register_exception_handlers(app)
 
