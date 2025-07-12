@@ -5,13 +5,9 @@
 
 ## 1. Overview
 
-FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱하고 Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스 기반 프로젝트입니다.     
-저장소 패턴 도입과 스키마, 서비스, 라이터 등 각 계층의 역할을 명확히 구분하였습니다.
-확장성과 유지보수성을 고려한 구조를 설계하였으며, 단순 기능 구현을 넘어서 실제 서비스 수준의 백엔드 설계 방식을 적용한 것이 특징입니다.
+FastAPI와 Redis를 활용해 RSS 뉴스 검색 결과를 캐싱하고, 계층별 책임 분리를 적용한 경량 웹 API 프로젝트입니다.
 
-This project is a web service built with FastAPI that parses RSS news feeds based on specific keywords and caches the search results using Redis to improve response speed.     
-It adopts the Repository pattern and clearly separates responsibilities across layers such as schemas, services, and routers.    
-Designed with scalability and maintainability in mind, the project goes beyond simple functionality by applying backend architectural practices used in real-world services.
+A lightweight web API project using FastAPI and Redis to cache RSS news search results with clear separation of concerns across application layers.
 
 ## 2. Features
 
