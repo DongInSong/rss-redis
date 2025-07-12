@@ -2,8 +2,8 @@
 ![License](https://img.shields.io/github/license/senli1073/senli1073.github.io)
 ![Last Commit](https://img.shields.io/github/last-commit/DongInSong/rss-redis)
 ## 1. Overview
-FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스 기반 테스트 프로젝트입니다. API를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.   
-This is a test project for a web service that parses RSS news feeds based on specific keywords using FastAPI and caches the search results with Redis to improve response speed. Users can fetch real-time news or quickly access previously cached data through API endpoints.
+FastAPI를 사용하여 특정 키워드에 대한 RSS 뉴스 피드를 파싱하고, Redis를 통해 검색 결과를 캐싱하여 응답 속도를 향상시키는 웹 서비스 기반 간단한 테스트 프로젝트입니다. API를 통해 실시간으로 뉴스를 검색하거나 캐시된 데이터를 빠르게 조회할 수 있습니다.   
+This is a simple test project for a web service that parses RSS news feeds based on specific keywords using FastAPI and caches the search results with Redis to improve response speed. Users can fetch real-time news or quickly access previously cached data through API endpoints.
 
 ## 2. Features
 
@@ -93,6 +93,10 @@ python -m tests.performance_test [keyword]
 3. Save the fetched data into Redis.
 4. Fetch the cached data from Redis and compare the elapsed time to evaluate performance gain.
 
-## 7. Future Plans
-- Study Redis internals and implement a mini-Redis clone using C++.
-- Replace Redis with the custom mini-Redis implementation in this project to compare real-world performance. [![GitHub](https://img.shields.io/badge/mini_redis-181717?style=flat&logo=github&logoColor=white)](https://github.com/DongInSong/mini-redis)
+## 7. Project Goals & Achievements
+- This project was developed as a client application to test the functionality and performance of a custom-built `mini-redis` server.
+- The `mini-redis` project, a C++-based Redis clone, has been successfully completed and validated for compatibility with standard Redis clients (`redis-py`) through this application.
+- Key achievements include:
+  - Verifying the stability and real-world performance of the `mini-redis` server.
+  - Confirming seamless integration with a standard Python Redis library.
+[![GitHub](https://img.shields.io/badge/mini_redis-181717?style=flat&logo=github&logoColor=white)](https://github.com/DongInSong/mini-redis)
