@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
     CACHE_TTL: int = 60 * 5  # 5분 TTL
+    LOG_LEVEL: str = "WARNING"
 
     RSS_FEEDS: list[str] = [
         "https://news.google.com/rss/search?q={query}",
