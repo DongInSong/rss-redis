@@ -20,6 +20,8 @@ async def fetch_rss(query: str):
                         result.append({
                             "title": entry.title,
                             "link": entry.link,
+                            "description": entry.get("summary", entry.get("description")),
+                            "pubDate": entry.get("published", entry.get("pubDate")),
                         })
             except (httpx.RequestError, httpx.HTTPStatusError) as e:
                 logger.error(f"Error fetching RSS feed from {final_url}: {e}")

@@ -4,6 +4,7 @@ import redis.asyncio as redis
 from app.core.redis import get_redis_client
 from app.repositories.cache_repository import CacheRepository
 from app.services.rss_search_service import RssSearchService
+from app.schemas.rss_schema import RSSFeed
 
 router = APIRouter(
     prefix="/rss",
@@ -23,7 +24,7 @@ def get_rss_search_service(repo: CacheRepository = Depends(get_cache_repository)
 async def ping(r: redis.Redis = Depends(get_redis_client)):
     return await r.ping()
 
-@router.get("/search")
+@router.get("/search", response_model=RSSFeed)
 async def search_news(
     q: str = Query(..., min_length=1),
     service: RssSearchService = Depends(get_rss_search_service)
