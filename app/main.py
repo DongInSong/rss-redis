@@ -3,10 +3,12 @@ from contextlib import asynccontextmanager
 from app.routers import rss_cache_router
 from app.core.exception_handler import register_exception_handlers
 from app.core.redis import redis_pool
+from app.core.logging_config import setup_logging
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
+    setup_logging()
     yield
     # Shutdown
     await redis_pool.disconnect()

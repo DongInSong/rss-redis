@@ -1,5 +1,6 @@
 import feedparser
 import httpx
+from loguru import logger
 from app.config import settings
 
 async def fetch_rss(query: str):
@@ -21,6 +22,6 @@ async def fetch_rss(query: str):
                             "link": entry.link,
                         })
             except (httpx.RequestError, httpx.HTTPStatusError) as e:
-                print(f"Error fetching RSS feed from {final_url}: {e}")
+                logger.error(f"Error fetching RSS feed from {final_url}: {e}")
 
     return result
